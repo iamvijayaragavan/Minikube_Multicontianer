@@ -18,11 +18,10 @@ spec:
   - name: data-share
     emptyDir: {}
   
-  nodeName: si0vmc2018
   containers:
 
   - name: nginx
-    image: fe-artifactoryha.de.bosch.com/docker-dev-local/nginx:latest
+    image: nginx:latest
     ports:
       - containerPort: 80
         protocol: TCP
@@ -31,7 +30,7 @@ spec:
       mountPath: /usr/share/nginx/html
 
   - name: debian
-    image: fe-artifactoryha.de.bosch.com/docker-dev-local/debian:latest
+    image: debian:latest
     volumeMounts:
     - name: data-share
       mountPath: /html
