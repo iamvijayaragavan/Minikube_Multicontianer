@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: opstree
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multicontainer
+  namespace: opstree
+  labels:
+    app: opstree
+spec:
+
+  restartPolicy: Never
+
+  volumes:
+  - name: data-share
+    emptyDir: {}
+  
+  nodeName: si0vmc2018
+  containers:
+
+  - name: nginx
+    image: fe-artifactoryha.de.bosch.com/docker-dev-local/nginx:latest
+    ports:
+      - containerPort: 80
+        protocol: TCP
+    volumeMounts:
+    - name: data-share
+      mountPath: /usr/share/nginx/html
+
+  - name: debian
+    image: fe-artifactoryha.de.bosch.com/docker-dev-local/debian:latest
+    volumeMounts:
+    - name: data-share
+      mountPath: /html
+    command: ["/bin/sh", "-c"]
+    #args: ["echo Hello >> /html/index.html"]
+    args:
+      - while true; do
+          echo Hello Opstree! Welcome to Minikube Multicontainer Pod >> /html/index.html;
+          sleep 100;
+        done
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: multicontainersvc
+  namespace: opstree
+  labels:
+    app: opstree
+spec:
+  selector:
+    app: opstree
+  type: NodePort
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      nodePort: 35000
