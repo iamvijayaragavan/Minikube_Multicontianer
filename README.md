@@ -30,6 +30,12 @@ Implementation of multicontainer in single pod with service in minikube environm
 	  
 	    ```vagrant destroy```
 
+# Output
+
+    You can see page once the setup is completed by clicking the following URL
+	
+	http://192.168.0.17:35000
+
 # Maintainer
 
  Vijayaragavan
